@@ -1,0 +1,587 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>蜡笔小新订餐网</title>
+	<link rel="shortcut icon" href="images/logo.png" />
+	<link rel="stylesheet" href="basic.css" />
+	<script type="text/javascript" src="yclib.js"></script>
+</head>
+<style>
+
+	#lishi{
+		width:170px;
+		height:160px;
+		position:absolute;
+		left:290px;
+		top:67px;
+		text-align:center;
+		font-size:14px;
+		color:#666;
+		cursor:pointer;
+	}
+	.bigbox #shopcar{
+		width:180px;
+		height:638px;
+		background:rgba(204,204,204,0.8);
+		display:none;
+		position:absolute;
+		top:-5px;
+		right:-180px;
+		border-radius:16px;
+		font-size:12px;
+		color:#333;
+		opacity:1;
+   animation:two 1s;
+   -moz-animation:two 1s; /* Firefox */
+   -webkit-animation:two 1s; /* Safari and Chrome */
+   -o-animation:two 1s; /* Opera */
+	}
+	
+	.bigbox #shopcar #food{
+		margin-left:15px;
+		margin-top:12px;
+	}
+	.bigbox #shopcar #allprice{
+		font-size:12px;
+		color:#333;
+		margin-left:15px;
+	}
+	.bigbox #shopcar #addnum,#reducenum{
+		display:inline-block;
+		width:18px;
+		height:18px;
+	}
+	.bigbox #shopcar #addnum{
+		margin-left:28px;
+		margin-right:8px;
+		background:url(images/num.png) -28px 0px;
+		position:absolute;
+		left:80px;
+	}
+	.bigbox #shopcar #reducenum{
+		margin-left:7px;
+		background:url(images/num.png) -1px 0px;
+		position:absolute;
+		left:145px;
+	}
+	.bigbox #shopcar #num{
+		display:inline-block;
+		width:30px;
+		height:20px;
+		text-align:center;
+		line-height:20px;
+		position:absolute;
+		left:124px;
+	}
+	.bigbox #shopcar #order{
+		display:inline-block;
+		width:50px;
+		height:20px;
+		background:#666;
+		border-radius:6px;
+		color:#fff;
+		line-height:20px;
+		text-align:center;
+		position:absolute;
+		right:8px;
+		bottom:10px;
+		z-index:1;
+		cursor:pointer;
+	}
+	#foodnum{
+		display:inline-block;
+		background-color:#F00;
+		color:#fff;
+		width:20px;
+		height:20px;
+		text-align:center;
+		line-height:20px;
+		border-radius:20px;
+		position:absolute;
+		right:55px;
+		top:13px;
+	}
+	#left #imgs{
+		width:401px;
+		height:283px;
+		position: relative;
+		top:160px;
+		left:20px;
+		border:#fff 2px solid;
+		border-radius:8px;
+	}
+	#imgs #scroll_num{
+		position:absolute;
+		left:15px;
+		bottom:5px;
+	}
+	#imgs #scroll_num li{
+		display:inline-block;
+		width:15px;
+		height:15px;
+		list-style:none;
+		border:#999 1px solid;
+		text-align:center;
+		line-height:15px;
+		color:#999;
+		border-radius:5px;
+	}
+	#bgdetails{
+		width:1000px;
+		height:630px;
+		background:rgba(204,204,204,0.9);
+		position:absolute;
+		z-index:20;
+		border-radius:14px;
+		display:none;
+		text-align:center;
+		line-height:30px;
+		color:#000;
+	}
+	#bgdetails hr{
+		width:800px;
+		color:#eee;
+	}
+	#close_bg{
+		display:inline-block;
+		width:30px;
+		height:30px;
+		border:#90C solid 1px;
+		border-radius:30px;
+		color:#90C;
+		line-height:30px;
+		text-align:center;
+		font-size:32px;
+		margin-left:950px;
+		margin-top:15px;
+		}
+	#close_bg:hover{
+		border:#f00 solid 1px;
+		color:#f00;
+	}
+	#detimg{
+	   border:2px solid #90C;
+	   border-radius:12px;
+	}
+	#hot{
+	  position:relative;
+	  top:70px;
+	  left:80px;	
+	}
+	#hotp{
+	   position:absolute;
+	   color:#fff;
+	   font-size:13px;
+	   top:-28px;
+	   left:38px;	
+	}
+
+#hot0,#hot1,#hot2{
+	position:relative;
+	top:-10px;
+  color:#666;
+  font-size:14px;
+  line-height:30px;	
+  cursor:pointer;
+}
+#hr{
+	display:block;
+	border-radius:5px 5px;
+	width:20px;
+	height:20px;
+	color:#fff;
+    position:relative;
+	left:95px;
+	top:-30px;	
+	font-size:15px;
+	text-align:center;
+}
+#hc{
+	display:block;
+	border-radius:5px 5px;
+	width:20px;
+	height:20px;
+	color:#fff;
+    position:relative;
+	left:-100px;
+	top:27px;	
+}
+#show{
+cursor:pointer;	
+}
+
+</style>
+<link rel="stylesheet" href="shopcar_1.css" >
+<body>
+	<div class="bigbox">
+		<div id="hidebg"></div>
+        <div id="bgdetails">
+        	<span id="close_bg">X</span>
+        </div>
+		<div class="smallbox"/>
+		<div id="left">
+			<div id="bgleft"></div>
+            <div id="hot">
+            <p id="hotp">今日热销</p>
+              <p><img src="images/hot.png" /><span id="hot0">敬请期待</span></p>
+               <p><img src="images/hot.png" /><span id="hot1">敬请期待</span></p>
+                <p><img src="images/hot.png" /><span id="hot2">敬请期待</span></p>
+            </div>
+			<div id="content" style="display:none">
+				<p><span id="details">菜单详情</span><span id="x">X</span></p>
+				<div id="foodimg">
+					<div id="foods"></div>
+				</div>
+				<span id="dishes"></span>
+				<span id="normal"></span>
+				<span id="real"></span>
+				<span id="buyfood">立即购买</span>
+			</div>
+			<p id="jilu">历史记录</p>
+			<div id="lishi"></div>
+			<p id="time"></p>
+			<div id="imgs">
+				<img src="images/1.jpg" id="pic"/>
+				<ul id="scroll_num">
+					<li onMouseOver="show(1)" onMouseOut="start()">1</li>
+					<li onMouseOver="show(2)" onMouseOut="start()">2</li>
+					<li onMouseOver="show(3)" onMouseOut="start()">3</li>
+				</ul>
+			</div>
+		</div>
+		<div id="right">
+			<div id="show"></div>
+		</div>
+		<div id="Login">
+			<span id="close">X</span>
+			<form action="" name="myform">
+				<p>用户名:<input type="text" id="username" name="username" /></p>
+				<p>密&nbsp;码:<input type="password" id="pwd" name="pwd" /></p>
+				<p>验证码:<input type="text" name="valcode"id="valcode" /></p>
+				<img src="http://218.196.14.220:8080/res/verifyCodeServlet" id="codeimg" alt="看不清，点击切换"/>
+			</form>
+			<p id="word">LOGIN</p>
+		</div>
+		<div id="Login_1">
+			<span id="close_x">X</span>
+			<form action="" name="myform1">
+				<p>送货地址:<input type="text" id="address" name="address" /></p>
+				<p>联系方式:<input type="password" id="tel" name="tel" /></p>
+				<p>送货时间:<input type="text" name="deliverytime"id="deliverytime" /></p>
+				<p>附&nbsp;&nbsp;言:<input type="text" name="ps"id="ps" /></p>
+			</form>
+			<p id="word_1">确认</p>
+		</div>
+	</div>
+	<div class="button">
+		<span id="showuser" style="display:none"></span>
+		<span id="login"><b>登录</b></span>
+		<div id="car"></div>
+		<span id="foodnum" style="display:none"></span>
+		<!--<span id="shop"><b>购物车</b></span>-->
+	</div>
+	<div id="shopcar">
+		<span id="order">确定下单</span>
+	</div>
+</div>
+
+<div id="volet_clos"> 
+<div id="volet">
+<a href="#volet_clos" aria-hidden="true" id="hc"><img src="images/hc.png" /></a>
+ <p>版权所在</p>
+  <p>YC</p> 
+   <a href="#volet" aria-hidden="true" id="hr"><img src="images/hr.png" /></a>
+    </div> 
+    </div>
+<script type="text/javascript">
+	
+
+	var str="";
+	var lis="";
+	var options={
+		
+		'jsonResponseListener':function(json){
+			jsona=json;
+			var food="<p id='menu'>特色菜单</p>";
+			for(var i=0;i<jsona.obj.length;i++){   
+				str+="<div width='180px' height='40px' class='menuPic' id='f"+i+"'>";  
+				str+="<img width='40px' height='40px' id='foodPic' src=http://218.196.14.220:8080/res/images/"+jsona.obj[i].fphoto+">";
+				str+="<span id='foodid'>"+jsona.obj[i].fname+"</span>";
+				str+="</div>"
+			}		
+			yc.$('show').innerHTML=str;	
+			
+			for(var i=0;i<jsona.obj.length;i++){ 
+				(function(index){
+					yc.addEvent(yc.$('f'+index),'click',function(){
+						fdd=jsona.obj[index].fid;
+						yc.$('content').style.display="block";
+						s="<img id=s"+fdd+" width='142px' height='95px' src=http://218.196.14.220:8080/res/images/"+jsona.obj[index].fphoto+">";
+						dishes="菜名："+jsona.obj[index].fname;
+						normal="标准价："+jsona.obj[index].normprice;
+						real="惊爆价:"+jsona.obj[index].realprice;
+						det="详情："+jsona.obj[index].detail;
+						var dimg="<img width='252px' height='252px' id='detimg' src=http://218.196.14.220:8080/res/images/"+jsona.obj[index].fphoto+">";
+						yc.$('foods').innerHTML=s;
+						yc.$('dishes').innerHTML=dishes;
+						yc.$('normal').innerHTML=normal;
+						yc.$('real').innerHTML=real;
+						yc.$('bgdetails').innerHTML="<span id='close_bg'>X</span>"+dimg+"<hr/>"+det;
+				        close_bg();
+						
+						var options={
+							"completeListener":function(){
+								
+							}
+						}
+						yc.xssRequest("http://218.196.14.220:8080/res/resfood.action?op=findFood&fid="+fdd,options);
+						
+						yc.$('bgleft').style.display="block";
+					yc.$('lishi').innerHTML=null;
+					showlis();			
+					
+
+				});
+				})(i);
+				
+			}
+			for(var j=0;j<3;j++){
+				  (function(index){
+					  yc.$("hot"+index).innerHTML=jsona.obj[index].fname;
+					  yc.addEvent(yc.$("hot"+index),'click',function(){
+						  hotid=jsona.obj[index].fid;
+						 
+						  fdd=hotid;
+						 
+					  yc.$('content').style.display="block";
+						hs="<img id=s"+hotid+" width='142px' height='95px' src=http://218.196.14.220:8080/res/images/"+jsona.obj[index].fphoto+">";
+						hdishes="菜名："+jsona.obj[index].fname;
+						hnormal="标准价："+jsona.obj[index].normprice;
+						hreal="惊爆价:"+jsona.obj[index].realprice;
+						hdet="详情："+jsona.obj[index].detail;
+						var hdimg="<img width='252px' height='252px' id='detimg' src=http://218.196.14.220:8080/res/images/"+jsona.obj[index].fphoto+">";
+						yc.$('foods').innerHTML=hs;
+						yc.$('dishes').innerHTML=hdishes;
+						yc.$('normal').innerHTML=hnormal;
+						yc.$('real').innerHTML=hreal;
+						yc.$('bgdetails').innerHTML="<span id='close_bg'>X</span>"+hdimg+"<hr/>"+hdet;
+				        close_bg();
+						
+						var options={
+							"completeListener":function(){
+								
+							}
+						}
+						yc.xssRequest("http://218.196.14.220:8080/res/resfood.action?op=findFood&fid="+hotid,options);
+						
+						yc.$('bgleft').style.display="block";
+					yc.$('lishi').innerHTML=null;
+					showlis();			  	
+					  })
+				  })(j);
+				 
+		
+				}
+		}
+	}
+	yc.ajaxRequest("http://218.196.14.220:8080/res/resfood.action?op=findAllFoods",options)
+	
+	function showlis(){
+		var options={
+			"completeListener":function(){
+				json=this.responseJSON.obj;
+				
+				for (var i = json.length - 1; i >= 0; i--) {
+					var b=json[i] .fname;
+					var p=document.createElement("p");
+					p.id=json[i].fid;
+					p.innerHTML=b;   
+					var tag=yc.$('lishi').getElementsByTagName('p');
+					
+					if (tag.length>=8) {
+						yc.$('lishi').removeChild(yc.$('lishi').firstChild);
+
+						yc.$('lishi').appendChild(p);
+					}else{
+						yc.$('lishi').appendChild(p);
+					}
+				}
+				for (var i = tag.length - 1; i >= 0; i--) {
+					(function(index){
+						yc.addEvent(tag[index],'click',function(){
+							id=tag[index].id;
+							fdd=jsona.obj[id-1].fid;
+							yc.$('content').style.display="block";
+							s="<img width='142px' height='95px' src=http://218.196.14.220:8080/res/images/"+jsona.obj[id-1].fphoto+">";
+							dishes="菜名："+jsona.obj[id-1].fname;
+							normal="标准价："+jsona.obj[id-1].normprice;
+							real="惊爆价:"+jsona.obj[id-1].realprice;
+							det="详情："+jsona.obj[id-1].detail;
+						var dimg="<img width='252px' height='252px' id='detimg' src=http://218.196.14.220:8080/res/images/"+jsona.obj[id-1].fphoto+">";
+						yc.$('foods').innerHTML=s;
+							yc.$('dishes').innerHTML=dishes;
+							yc.$('normal').innerHTML=normal;
+							yc.$('real').innerHTML=real;
+							yc.$('bgleft').style.display="block";
+						
+						yc.$('bgdetails').innerHTML="<span id='close_bg'>X</span>"+dimg+"<hr/>"+det;
+						close_bg();
+						})
+						
+					})(i);
+					
+					
+				}
+			}
+		};
+
+		yc.xssRequest("http://218.196.14.220:8080/res/resfood.action?op=findAllSelectedFoods",options);
+
+	}
+	showlis();
+
+
+	shop();
+
+	yc.addEvent('buyfood','click',function(){
+		yc.$('bgleft').style.display="none";
+		var options={
+			
+			"completeListener":function(){
+				var json=this.responseJSON;
+				if(json.code==0){
+					alert(json.msg);	
+				}
+				if(json.code==1){
+					
+					
+					shop();
+					yc.$("shopcar").innerHTML=null;
+					yc.$("shopcar").innerHTML="<span id='order'>确定下单</span>"
+					order();
+				}
+			}
+			
+		}
+		yc.xssRequest("http://218.196.14.220:8080/res/resorder.action?num=1&op=order&fid="+fdd,options);
+
+	});
+
+	function shop(){
+		var shopcar={
+			"completeListener":function(){
+				var json=this.responseJSON;
+				var count=0;
+				for(var a in json.obj){
+					if(json.obj.hasOwnProperty(a)){
+						count++;
+					}
+				}
+			//console.log(json.obj);
+			if(count>0){
+			for(var i in json.obj){
+				fprice=json.obj[i].smallCount;
+				if(json.obj.hasOwnProperty(i)){
+					
+					fnum=json.obj[i].num
+					fid=json.obj[i].food.fid;
+					fod=json.obj[i].food;
+					var div=document.createElement("div");
+					var p=document.createElement("p");
+					var span1=document.createElement("span");
+					var span2=document.createElement("span");
+					var span3=document.createElement("span");
+					var span4=document.createElement("span");
+					span3.id="addnum";
+					span4.id="reducenum";
+					
+					yc.$('content').style.display="none";
+					p.id="food";
+					p.innerHTML="<img width='18px' height='18px' src=http://218.196.14.220:8080/res/images/"+fod.fphoto+">&nbsp;&nbsp;"+fod.fname;
+					span1.innerHTML="<span id='allprice'>小计："+json.obj[i].smallCount+"</span>"
+					span2.innerHTML="<span id='num'>"+fnum+"</span>"
+					div.appendChild(p);
+					div.appendChild(span1);
+					div.appendChild(span3);
+					div.appendChild(span2);
+					div.appendChild(span4);
+					yc.prependChild( yc.$("shopcar"),div);
+					(function(fid){
+						yc.addEvent("addnum","click",function(){
+							var num=1;
+							var options={
+								"completeListener":function(){
+									yc.$("shopcar").innerHTML=null;
+									shop();
+									yc.$("shopcar").innerHTML="<span id='order'>确定下单</span>"
+									
+								}
+								
+							}
+							yc.xssRequest("http://218.196.14.220:8080/res/resorder.action?op=orderJson&num="+num+"&fid="+fid,options);
+						});
+						yc.addEvent("reducenum","click",function(){
+							var length=yc.$("shopcar").getElementsByTagName("div").length;
+							var num=-1;
+							var options={
+								"completeListener":function(){
+									yc.$("shopcar").innerHTML=null;
+									shop();
+									yc.$("shopcar").innerHTML="<span id='order'>确定下单</span>";
+	
+									order();
+								}
+								
+							}
+							yc.xssRequest("http://218.196.14.220:8080/res/resorder.action?op=orderJson&num="+num+"&fid="+fid,options);
+						
+						}) 
+						
+						
+					})(fid);
+				}
+			}
+			function foodnum(){	
+				yc.$("foodnum").style.display="block";
+				yc.$("foodnum").innerHTML=yc.$("shopcar").getElementsByTagName("div").length;
+			}
+			foodnum();
+		}else{
+				yc.$("foodnum").innerHTML=0;
+				 yc.$("shopcar").style.display="none";
+				  
+		}
+					
+				}
+				
+
+	}
+	yc.xssRequest("http://218.196.14.220:8080/res/resorder.action?op=getCartInfo",shopcar);
+}
+function order(){
+	yc.addEvent(yc.$('order'),'click',function(){
+		var options={
+			"completeListener":function(){
+				var json=this.responseJSON;
+				if(json.code==1){
+					yc.$("Login_1").style.display="block";
+					yc.$('hidebg').style.display="block";
+				}
+				else{
+					yc.$('hidebg').style.display="block";
+					yc.$('Login').style.display="block";
+				}
+			}
+		}
+		yc.xssRequest("http://218.196.14.220:8080/res/resuser.action?op=checkLogin",options);
+	})
+}
+order();
+</script>
+<script type="text/javascript" src="login.js"></script>
+<script type="text/javascript" src="shopcar.js"></script>
+<script type="text/javascript" src="showImgs.js"></script>
+<script type="text/javascript" src="details.js"></script>
+</body>
+</html>
